@@ -1,0 +1,24 @@
+<!-- views/login.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login - E-commerce App</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+    <script src="/js/login.js" defer></script>
+  </head>
+  <body>
+    <h1>Login</h1>
+    <form id="login-form">
+      <input
+        type="text"
+        name="usernameOrEmail"
+        placeholder="Username or Email"
+        required
+      />
+      <input type="password" name="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+    <div id="error-message"></div>
+  </body>
+</html>
