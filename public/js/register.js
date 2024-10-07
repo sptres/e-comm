@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    errorDiv.style.display = 'none';
     errorDiv.textContent = '';
 
     const username = form.username.value.trim();
@@ -20,31 +21,33 @@ document.addEventListener('DOMContentLoaded', () => {
       username.length < 3 ||
       username.length > 30
     ) {
-      errorDiv.textContent =
-        'Invalid username. Must be 3-30 characters with no special characters.';
+      showError(
+        'Invalid username. Must be 3-30 characters with no special characters.'
+      );
       return;
     }
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email) || email.length < 5 || email.length > 50) {
-      errorDiv.textContent = 'Invalid email format.';
+      showError('Invalid email format.');
       return;
     }
 
     if (password !== confirmPassword) {
-      errorDiv.textContent = 'Passwords do not match.';
+      showError('Passwords do not match.');
       return;
     }
 
     if (password.length < 8 || password.length > 100) {
-      errorDiv.textContent = 'Password must be 8-100 characters.';
+      showError('Password must be 8-100 characters.');
       return;
     }
 
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/;
     if (!passwordPattern.test(password)) {
-      errorDiv.textContent =
-        'Password must contain uppercase, lowercase, number, and special character.';
+      showError(
+        'Password must contain uppercase, lowercase, number, and special character.'
+      );
       return;
     }
 
@@ -62,11 +65,16 @@ document.addEventListener('DOMContentLoaded', () => {
         alert(result.message);
         window.location.href = '/login';
       } else {
-        errorDiv.textContent = `Error: ${result.error}`;
+        showError(`Error: ${result.error}`);
       }
     } catch (error) {
       console.error(error);
-      errorDiv.textContent = 'An error occurred. Please try again.';
+      showError('An error occurred. Please try again.');
     }
   });
+
+  function showError(message) {
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+  }
 });

@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    errorDiv.style.display = 'none';
     errorDiv.textContent = '';
 
     const usernameOrEmail = form.usernameOrEmail.value.trim();
@@ -11,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Client-side validation
     if (!usernameOrEmail || !password) {
-      errorDiv.textContent = 'All fields are required.';
+      showError('All fields are required.');
       return;
     }
 
@@ -30,11 +31,16 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Token stored:', localStorage.getItem('token')); // Debug log
         window.location.href = '/';
       } else {
-        errorDiv.textContent = `Error: ${result.error}`;
+        showError(`Error: ${result.error}`);
       }
     } catch (error) {
       console.error('Login error:', error);
-      errorDiv.textContent = 'An error occurred. Please try again.';
+      showError('An error occurred. Please try again.');
     }
   });
+
+  function showError(message) {
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+  }
 });

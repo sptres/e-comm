@@ -11,35 +11,36 @@
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
-    <!-- Custom CSS -->
   </head>
   <body>
-    <h1>Welcome to our E-commerce App</h1>
-    <!-- Navigation Bar -->
+    <h1 class="text-center">Welcome to Shawn's Store</h1>
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="/">E-commerce App</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <!-- Left Side of Navbar -->
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="/">Home</a>
-          </li>
-        </ul>
-        <!-- Right Side of Navbar -->
-        <ul class="navbar-nav" id="nav-auth">
-          <!-- Authentication links will be inserted here by index.js -->
-        </ul>
+      <div class="container-fluid">
+        <a class="navbar-brand mx-auto" href="/">Shawn's Store</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <!-- Left Side of Navbar -->
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+          </ul>
+          <!-- Right Side of Navbar -->
+          <ul class="navbar-nav" id="nav-auth">
+            <!-- Authentication links will be inserted here by index.js -->
+          </ul>
+        </div>
       </div>
     </nav>
 
@@ -123,8 +124,10 @@
       </div>
     </div>
 
-    <!-- Include jQuery and Bootstrap JS (optional) -->
+    <!-- bootstrap -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
     <!-- Main JavaScript File -->
     <script src="/js/index.js" defer></script>
   </body>

@@ -2,7 +2,8 @@
 
 document.addEventListener('DOMContentLoaded', async () => {
   const token = localStorage.getItem('token');
-  console.log('Token from localStorage:', token); // Debug log
+  // debugin
+  console.log('Token from localStorage:', token);
 
   const authResponse = await fetch('/auth/session', {
     headers: {
@@ -10,8 +11,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     },
   });
   const authData = await authResponse.json();
-
-  console.log('Auth data:', authData); // Debugging line
+  // debugging
+  console.log('Auth data:', authData);
 
   // Update Navigation Bar
   const navAuth = document.getElementById('nav-auth');
