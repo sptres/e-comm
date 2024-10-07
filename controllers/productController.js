@@ -71,7 +71,7 @@ exports.getProductDetails = async (req, res) => {
     const relatedProducts = await Product.find({
       brand: product.brand._id,
       _id: { $ne: product._id },
-    }).limit(5);
+    }).limit(4);
 
     res.status(200).json({ product, relatedProducts });
   } catch (error) {

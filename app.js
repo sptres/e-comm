@@ -23,6 +23,12 @@ const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 
+// Make sure this route is defined before your API routes
+app.get('/products/details/:productId', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'product-details.html'));
+});
+
+// Your API routes should come after this
 app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
 app.use('/admin', adminRoutes);

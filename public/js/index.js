@@ -215,6 +215,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       </button>
     `;
     document.querySelector('.container-fluid').prepend(errorDiv);
+
+    // Automatically remove the message after 1 second
+    setTimeout(() => {
+      errorDiv.remove();
+    }, 1000);
   }
 
   // New function to show success messages
@@ -229,6 +234,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       </button>
     `;
     document.querySelector('.container-fluid').prepend(successDiv);
+
+    // Automatically remove the message after 1 second
+    setTimeout(() => {
+      successDiv.remove();
+    }, 1000);
   }
 
   // Setup Pagination
