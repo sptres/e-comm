@@ -1,5 +1,3 @@
-// public/js/login.js
-
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('login-form');
   const errorDiv = document.getElementById('error-message');
@@ -25,15 +23,17 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       const result = await response.json();
+      console.log('Login response:', result); // Debug log
 
       if (response.ok) {
-        alert(result.message);
+        localStorage.setItem('token', result.token);
+        console.log('Token stored:', localStorage.getItem('token')); // Debug log
         window.location.href = '/';
       } else {
         errorDiv.textContent = `Error: ${result.error}`;
       }
     } catch (error) {
-      console.error(error);
+      console.error('Login error:', error);
       errorDiv.textContent = 'An error occurred. Please try again.';
     }
   });

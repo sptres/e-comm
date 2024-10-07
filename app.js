@@ -6,17 +6,16 @@ require('dotenv').config();
 
 const app = express();
 
+// Ensure JWT_SECRET is set
+if (!process.env.JWT_SECRET) {
+  console.error('JWT_SECRET is not set in environment variables');
+  process.exit(1);
+}
+
 db();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(
-  session({
-    secret: process.env.JWT_SECRET || 'secret',
-    resave: false,
-    saveUninitialized: false,
-  })
-);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // import routes and set up routes
@@ -45,7 +44,13 @@ app.get('/login', (req, res) => {
 
 // handle 404 errors
 app.use((req, res, next) => {
-  res.status(404).send('Sorry, the page you are looking for does not exist.');
+  res.status(404).json({ error: 'Not Found' });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Internal Server Error' });
 });
 
 const PORT = process.env.PORT || 3000;

@@ -77,6 +77,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { usernameOrEmail, password } = req.body;
+    console.log('Login attempt:', usernameOrEmail); // Debug log
 
     if (!usernameOrEmail || !password) {
       return res.status(400).json({ error: 'Some fields are missing' });
@@ -100,9 +101,10 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
+    console.log('Token generated:', token); // Debug log
     res.status(200).json({ token });
   } catch (error) {
-    console.error(error);
+    console.error('Login error:', error);
     res.status(500).json({ message: 'An error occurred' });
   }
 };
@@ -110,8 +112,6 @@ exports.login = async (req, res) => {
 // logout user
 exports.logout = (req, res) => {
   try {
-    // clear the session
-    req.session.destroy();
     res.status(200).json({ message: 'Logged out successfully' });
   } catch (error) {
     console.error(error);
@@ -120,9 +120,30 @@ exports.logout = (req, res) => {
 };
 
 exports.session = (req, res) => {
-  if (req.session.userId) {
-    res.json({ isAuthenticated: true, isAdmin: req.session.isAdmin });
-  } else {
+  const token = req.header('Authorization')?.replace('Bearer ', '');
+
+  if (!token) {
+    return res.json({ isAuthenticated: false });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log('Decoded token:', decoded); // Debug log
+    res.json({ isAuthenticated: true, userId: decoded.userId });
+  } catch (err) {
+    console.error('Token verification error:', err);
     res.json({ isAuthenticated: false });
+  }
+};
+
+exports.getFavorites = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId).populate('favorites');
+    res.json({ favorites: user.favorites });
+  } catch (error) {
+    console.error('Error fetching favorites:', error);
+    res
+      .status(500)
+      .json({ error: 'An error occurred while fetching favorites' });
   }
 };

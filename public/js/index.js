@@ -1,35 +1,55 @@
 // public/js/main.js
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Check user authentication status
-  const authResponse = await fetch('/auth/session');
+  const token = localStorage.getItem('token');
+  console.log('Token from localStorage:', token); // Debug log
+
+  const authResponse = await fetch('/auth/session', {
+    headers: {
+      Authorization: token ? `Bearer ${token}` : '',
+    },
+  });
   const authData = await authResponse.json();
+
+  console.log('Auth data:', authData); // Debugging line
 
   // Update Navigation Bar
   const navAuth = document.getElementById('nav-auth');
   if (authData.isAuthenticated) {
+    console.log('User is authenticated'); // Debugging line
     navAuth.innerHTML = `
-        <li class="nav-item">
-          <a class="nav-link" href="#" id="logout-link">Logout</a>
-        </li>
-      `;
+      <li class="nav-item">
+        <a class="nav-link" href="#" id="logout-link">Logout</a>
+      </li>
+    `;
 
     document
       .getElementById('logout-link')
       .addEventListener('click', async (e) => {
         e.preventDefault();
-        await fetch('/auth/logout');
-        window.location.reload();
+        try {
+          const response = await fetch('/auth/logout', { method: 'POST' });
+          if (response.ok) {
+            localStorage.removeItem('token'); // remove the token from localStorage
+            window.location.href = '/'; // redirect to home
+          } else {
+            const errorData = await response.json();
+            console.error('Logout failed:', errorData.error);
+          }
+        } catch (error) {
+          console.error('Error during logout:', error);
+        }
       });
   } else {
+    console.log('User is not authenticated'); // Debugging line
     navAuth.innerHTML = `
-        <li class="nav-item">
-          <a class="nav-link" href="/register">Sign Up</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/login.html">Login</a>
-        </li>
-      `;
+      <li class="nav-item">
+        <a class="nav-link" href="/register">Sign Up</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/login">Login</a>
+      </li>
+    `;
   }
 
   // Load brands for filter panel
@@ -96,7 +116,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const productCard = `
           <div class="col-md-4">
             <div class="card mb-4">
-              <img src="${product.image}" class="card-img-top" alt="${product.name}">
+              <img src="/images/${product.image}" class="card-img-top" alt="${product.name}">
               <div class="card-body">
                 <h5 class="card-title">${product.name}</h5>
                 <p class="card-text">${product.brand.name}</p>
@@ -164,10 +184,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Load Favorites (if logged in)
   if (authData.isAuthenticated) {
-    const favoritesResponse = await fetch('/auth/favorites');
-    const favoritesData = await favoritesResponse.json();
-    if (favoritesResponse.ok) {
+    try {
+      const favoritesResponse = await fetch('/auth/favorites', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!favoritesResponse.ok) {
+        throw new Error(`HTTP error! status: ${favoritesResponse.status}`);
+      }
+      const favoritesData = await favoritesResponse.json();
       displayFavorites(favoritesData.favorites);
+    } catch (error) {
+      console.error('Error fetching favorites:', error);
     }
   }
 
@@ -194,7 +223,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
         const result = await response.json();
         if (response.ok) {
-          // Remove the product from the favorites list
           e.target.closest('li').remove();
         } else {
           alert(`Error: ${result.error}`);
