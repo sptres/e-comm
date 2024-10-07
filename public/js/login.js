@@ -28,8 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (response.ok) {
         localStorage.setItem('token', result.token);
+        localStorage.setItem('isAdmin', result.isAdmin);
         console.log('Token stored:', localStorage.getItem('token')); // Debug log
-        window.location.href = '/';
+        if (result.isAdmin) {
+          window.location.href = '/admin';
+        } else {
+          window.location.href = '/';
+        }
       } else {
         showError(`Error: ${result.error}`);
       }

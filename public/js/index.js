@@ -20,11 +20,23 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (authData.isAuthenticated) {
     console.log('User is authenticated');
     isAuthenticated = true;
-    navAuth.innerHTML = `
+    let navContent = `
       <li class="nav-item">
         <a class="nav-link" href="#" id="logout-link">Logout</a>
       </li>
     `;
+
+    // Add admin link if user is an admin
+    if (authData.isAdmin) {
+      navContent =
+        `
+        <li class="nav-item">
+          <a class="nav-link" href="/admin">Admin</a>
+        </li>
+      ` + navContent;
+    }
+
+    navAuth.innerHTML = navContent;
 
     document
       .getElementById('logout-link')

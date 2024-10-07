@@ -2,8 +2,8 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');
-const { isAdmin } = require('../middleware/auth');
+const { isAuthenticated, isAdmin } = require('../middleware/auth');
 
-router.get('/', isAdmin, adminController.getAdminPage);
+router.get('/data', isAuthenticated, isAdmin, adminController.getAdminPage);
 
 module.exports = router;

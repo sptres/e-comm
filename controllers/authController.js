@@ -77,7 +77,6 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { usernameOrEmail, password } = req.body;
-    console.log('Login attempt:', usernameOrEmail); // Debug log
 
     if (!usernameOrEmail || !password) {
       return res.status(400).json({ error: 'Some fields are missing' });
@@ -87,22 +86,17 @@ exports.login = async (req, res) => {
       $or: [{ username: usernameOrEmail }, { email: usernameOrEmail }],
     });
 
-    if (!user) {
+    if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const token = jwt.sign(
+      { userId: user._id, isAdmin: user.isAdmin },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
 
-    if (!isPasswordValid) {
-      return res.status(400).json({ error: 'Invalid credentials' });
-    }
-
-    // create JWT token
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
-    });
-    console.log('Token generated:', token); // Debug log
-    res.status(200).json({ token });
+    res.status(200).json({ token, isAdmin: user.isAdmin });
   } catch (error) {
     console.error('Login error:', error);
     res.status(500).json({ message: 'An error occurred' });
@@ -119,7 +113,7 @@ exports.logout = (req, res) => {
   }
 };
 
-exports.session = (req, res) => {
+exports.session = async (req, res) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
 
   if (!token) {
@@ -128,8 +122,18 @@ exports.session = (req, res) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    console.log('Decoded token:', decoded); // Debug log
-    res.json({ isAuthenticated: true, userId: decoded.userId });
+    console.log('Decoded token:', decoded);
+
+    // Fetch user to get isAdmin status
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      return res.json({ isAuthenticated: false });
+    }
+    res.json({
+      isAuthenticated: true,
+      userId: decoded.userId,
+      isAdmin: user.isAdmin,
+    });
   } catch (err) {
     console.error('Token verification error:', err);
     res.json({ isAuthenticated: false });
