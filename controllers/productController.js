@@ -12,7 +12,7 @@ exports.getProducts = async (req, res) => {
 
     const filter = {};
 
-    // Validate brand filters
+    // brand filter
     if (brand) {
       const brandNames = brand.split(';');
       const brands = await Brand.find({ name: { $in: brandNames } });
@@ -22,7 +22,7 @@ exports.getProducts = async (req, res) => {
       filter.brand = { $in: brands.map((b) => b._id) };
     }
 
-    // Handle type filters
+    // type filter
     if (type) {
       const types = type.split(';');
       const validTypes = ['Type1', 'Type2', 'Type3', 'Type4']; // Add 'Type4' to valid types
@@ -35,7 +35,7 @@ exports.getProducts = async (req, res) => {
     const totalProducts = await Product.countDocuments(filter);
     const totalPages = Math.ceil(totalProducts / limit);
 
-    // Fetch products
+    // fetch products
     const products = await Product.find(filter)
       .skip(skip)
       .limit(limit)
@@ -58,7 +58,7 @@ exports.getProductDetails = async (req, res) => {
   try {
     const { productId } = req.params;
 
-    // Validate product ID
+    // validate product id
     if (!mongoose.Types.ObjectId.isValid(productId)) {
       return res.status(422).json({ error: 'Invalid product ID.' });
     }
@@ -68,7 +68,7 @@ exports.getProductDetails = async (req, res) => {
       return res.status(404).json({ error: 'Product does not exist.' });
     }
 
-    // Fetch products from the same brand
+    // fetch same brand products
     const relatedProducts = await Product.find({
       brand: product.brand._id,
       _id: { $ne: product._id },
@@ -85,12 +85,12 @@ exports.favoriteProduct = async (req, res) => {
   try {
     const { productId } = req.params;
 
-    // Get the user ID from the JWT token
+    // get user ID
     const token = req.headers.authorization.split(' ')[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.userId;
 
-    // Validate product ID
+    // validate product ID
     if (!mongoose.Types.ObjectId.isValid(productId)) {
       return res.status(422).json({ error: 'Invalid product ID.' });
     }
@@ -118,12 +118,12 @@ exports.unfavoriteProduct = async (req, res) => {
   try {
     const { productId } = req.params;
 
-    // Get the user ID from the JWT token
+    // get user ID
     const token = req.headers.authorization.split(' ')[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const userId = decoded.userId;
 
-    // Validate product ID
+    // validate product ID
     if (!mongoose.Types.ObjectId.isValid(productId)) {
       return res.status(422).json({ error: 'Invalid product ID.' });
     }

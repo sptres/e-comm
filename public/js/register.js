@@ -1,5 +1,3 @@
-// public/js/register.js
-
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('register-form');
   const errorDiv = document.getElementById('error-message');
@@ -14,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const password = form.password.value;
     const confirmPassword = form.confirmPassword.value;
 
-    // Client-side validation
+    // client validation
     const usernamePattern = /^[a-zA-Z0-9]+$/;
     if (
       !usernamePattern.test(username) ||
@@ -51,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Send request to server
     try {
       const response = await fetch('/auth/register', {
         method: 'POST',

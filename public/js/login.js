@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const usernameOrEmail = form.usernameOrEmail.value.trim();
     const password = form.password.value;
 
-    // Client-side validation
+    // client validation
     if (!usernameOrEmail || !password) {
       showError('All fields are required.');
       return;
@@ -24,12 +24,10 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       const result = await response.json();
-      console.log('Login response:', result); // Debug log
 
       if (response.ok) {
         localStorage.setItem('token', result.token);
         localStorage.setItem('isAdmin', result.isAdmin);
-        console.log('Token stored:', localStorage.getItem('token')); // Debug log
         if (result.isAdmin) {
           window.location.href = '/admin';
         } else {

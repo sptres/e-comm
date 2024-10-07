@@ -117,7 +117,7 @@ function showErrorMessage(message) {
   `;
   document.querySelector('.container').prepend(errorDiv);
 
-  // Automatically remove the message after 5 seconds
+  // remove message after 1 second
   setTimeout(() => {
     errorDiv.remove();
   }, 1000);
@@ -135,7 +135,7 @@ function showSuccessMessage(message) {
   `;
   document.querySelector('.container').prepend(successDiv);
 
-  // Automatically remove the message after 5 seconds
+  // remove message after 1 second
   setTimeout(() => {
     successDiv.remove();
   }, 1000);

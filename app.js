@@ -6,7 +6,6 @@ require('dotenv').config();
 
 const app = express();
 
-// Ensure JWT_SECRET is set
 if (!process.env.JWT_SECRET) {
   console.error('JWT_SECRET is not set in environment variables');
   process.exit(1);
@@ -18,17 +17,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Import routes
+// import routes
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 
-// Set up routes
+// set up routes
 app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
 app.use('/admin', adminRoutes);
 
-// HTML routes
+// html routes
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
@@ -49,15 +48,15 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'admin.html'));
 });
 
-// Handle 404 errors
+// not found page errors
 app.use((req, res, next) => {
   res.status(404).sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
-// Global error handler
+// global error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).sendFile(path.join(__dirname, 'views', '500.html'));
+  res.status(500).sendFile(path.join(__dirname, 'views', '404.html'));
 });
 
 const PORT = process.env.PORT || 3000;

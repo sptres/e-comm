@@ -1,9 +1,7 @@
-// public/js/main.js
-
 document.addEventListener('DOMContentLoaded', async () => {
   let isAuthenticated = false;
   let token = localStorage.getItem('token');
-  // debugin
+  // debugging
   console.log('Token from localStorage:', token);
 
   const authResponse = await fetch('/auth/session', {
@@ -15,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // debugging
   console.log('Auth data:', authData);
 
-  // Update Navigation Bar
+  // conditional navigation
   const navAuth = document.getElementById('nav-auth');
   if (authData.isAuthenticated) {
     console.log('User is authenticated');
@@ -26,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       </li>
     `;
 
-    // Add admin link if user is an admin
+    // admin link if user is admin
     if (authData.isAdmin) {
       navContent =
         `
@@ -56,7 +54,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
       });
 
-    // Load Favorites for authenticated users
+    // fetch favorites
     loadFavorites(token);
   } else {
     console.log('User is not authenticated');
@@ -70,11 +68,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       </li>
     `;
 
-    // Display message for non-authenticated users
+    // display message for non-authenticated users
     displayFavoritesMessage();
   }
 
-  // Load brands for filter panel
+  // load brands for filter panel
   const brandFiltersDiv = document.getElementById('brand-filters');
   const brandsResponse = await fetch('/products/brands');
   const brandsData = await brandsResponse.json();
@@ -90,16 +88,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // Handle Filter Form Submission
+  // handle filter form submission
   const filterForm = document.getElementById('filter-form');
   filterForm.addEventListener('submit', (e) => {
     e.preventDefault();
     loadProducts(1); // Load products with filters applied
   });
 
-  // Load Products
+  // load products
   async function loadProducts(page = 1) {
-    // Get selected filters
+    // get selected filters
     const selectedBrands = Array.from(
       document.querySelectorAll('#brand-filters input[type="checkbox"]:checked')
     ).map((checkbox) => checkbox.value);
@@ -126,7 +124,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         setupPagination(page, productsData.totalPages);
       }
     } else {
-      // Handle errors (e.g., invalid filters)
+      // handle errors
       document.getElementById(
         'product-gallery'
       ).innerHTML = `<p>${productsData.error}</p>`;
@@ -134,7 +132,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Display Products
+  // display products
   function displayProducts(products) {
     const gallery = document.getElementById('product-gallery');
     gallery.innerHTML = '';
@@ -170,7 +168,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       row.insertAdjacentHTML('beforeend', productCard);
     });
 
-    // If there are fewer than 3 products, add empty columns to maintain layout
+    // if there are fewer than 3 products, add empty columns to maintain layout
     const emptyColumns = 3 - (products.length % 3);
     if (emptyColumns < 3) {
       for (let i = 0; i < emptyColumns; i++) {
@@ -181,14 +179,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     gallery.appendChild(row);
 
-    // Add event listeners to favorite buttons
+    // event listeners to favorite buttons
     const favoriteButtons = document.querySelectorAll('.favorite-btn');
     favoriteButtons.forEach((button) => {
       button.addEventListener('click', handleFavoriteClick);
     });
   }
 
-  // New function to handle favorite button clicks
+  // handle favorite button clicks
   async function handleFavoriteClick(e) {
     const productId = e.target.closest('.favorite-btn').dataset.productId;
 
@@ -219,7 +217,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // New function to show error messages
+  // show error message
   function showErrorMessage(message) {
     const errorDiv = document.createElement('div');
     errorDiv.className = 'alert alert-danger alert-dismissible fade show';
@@ -232,13 +230,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     `;
     document.querySelector('.container-fluid').prepend(errorDiv);
 
-    // Automatically remove the message after 1 second
+    // remove message after 1 second
     setTimeout(() => {
       errorDiv.remove();
     }, 1000);
   }
 
-  // New function to show success messages
+  // show success message
   function showSuccessMessage(message) {
     const successDiv = document.createElement('div');
     successDiv.className = 'alert alert-success alert-dismissible fade show';
@@ -251,18 +249,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     `;
     document.querySelector('.container-fluid').prepend(successDiv);
 
-    // Automatically remove the message after 1 second
+    // remove message after 1 second
     setTimeout(() => {
       successDiv.remove();
     }, 1000);
   }
 
-  // Setup Pagination
+  // pagination
   function setupPagination(currentPage, totalPages) {
     const pagination = document.getElementById('pagination');
     pagination.innerHTML = '';
 
-    // Previous button
+    // prev button disable if curr == 1
     const prevClass = currentPage == 1 ? 'disabled' : '';
     const prevPage = currentPage - 1;
     pagination.insertAdjacentHTML(
@@ -274,7 +272,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </li>`
     );
 
-    // Page numbers
+    // page num
     for (let i = 1; i <= totalPages; i++) {
       const activeClass = currentPage == i ? 'active' : '';
       pagination.insertAdjacentHTML(
@@ -285,7 +283,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       );
     }
 
-    // Next button
+    // next button disable if curr == totalPages
     const nextClass = currentPage == totalPages ? 'disabled' : '';
     const nextPage = currentPage + 1;
     pagination.insertAdjacentHTML(
@@ -297,7 +295,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         </li>`
     );
 
-    // Add event listeners to pagination links
+    // event listeners to pagination links
     const pageLinks = document.querySelectorAll('#pagination a.page-link');
     pageLinks.forEach((link) => {
       link.addEventListener('click', (e) => {
@@ -310,7 +308,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  // New function to load favorites
+  // load favorites
   async function loadFavorites(token) {
     try {
       const favoritesResponse = await fetch('/auth/favorites', {
@@ -331,7 +329,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // Updated function to display favorites
+  // display favorites
   function displayFavorites(favorites) {
     const favoritesContent = document.getElementById('favorites-content');
     if (favorites.length === 0) {
@@ -353,14 +351,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     favoritesContent.innerHTML = '';
     favoritesContent.appendChild(favoritesList);
 
-    // Add event listeners to unfavorite buttons
+    // event listeners to unfavorite buttons
     const unfavoriteButtons = document.querySelectorAll('.unfavorite-btn');
     unfavoriteButtons.forEach((button) => {
       button.addEventListener('click', handleUnfavoriteClick);
     });
   }
 
-  // New function to handle unfavorite button clicks
+  // handle unfavorite button clicks
   async function handleUnfavoriteClick(e) {
     const productId = e.target.dataset.productId;
 
@@ -387,7 +385,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
-  // New function to display message for non-authenticated users or errors
+  // display message for non-authenticated users or errors
   function displayFavoritesMessage(
     message = 'Must be logged in for this feature'
   ) {
@@ -395,13 +393,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     favoritesContent.innerHTML = `<p class="text-muted">${message}</p>`;
   }
 
-  // New function to display "No products found" message
+  // display "No products found" message
   function displayNoProductsFound() {
     const gallery = document.getElementById('product-gallery');
     gallery.innerHTML = '<p class="col-12 text-center">No products found</p>';
     document.getElementById('pagination').innerHTML = '';
   }
 
-  // Initial load
+  // initial
   loadProducts(1);
 });

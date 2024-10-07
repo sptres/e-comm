@@ -67,7 +67,7 @@ exports.register = async (req, res) => {
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (error) {
-    // Handle the error appropriately
+    // handle error
     console.error(error);
     res.status(500).json({ message: 'An error occurred' });
   }
@@ -124,7 +124,7 @@ exports.session = async (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log('Decoded token:', decoded);
 
-    // Fetch user to get isAdmin status
+    // check if user is Admin
     const user = await User.findById(decoded.userId);
     if (!user) {
       return res.json({ isAuthenticated: false });

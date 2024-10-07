@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// middleware/authMiddleware.js
+// check if user is authenticated
 module.exports.isAuthenticated = (req, res, next) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
 
@@ -18,6 +18,7 @@ module.exports.isAuthenticated = (req, res, next) => {
   }
 };
 
+// check if user is admin
 exports.isAdmin = async (req, res, next) => {
   if (!req.user) {
     return res.status(401).json({ error: 'Authentication required' });
