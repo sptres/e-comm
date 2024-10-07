@@ -3,7 +3,7 @@ const router = express.Router();
 const productController = require('../controllers/productController');
 const { isAuthenticated } = require('../middleware/auth');
 
-router.get('/', productController.getProducts);
+router.get('/api', productController.getProducts); // Changed this line
 router.get('/brands', productController.getBrands);
 router.get('/api/details/:productId', productController.getProductDetails);
 router.post(

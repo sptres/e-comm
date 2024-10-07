@@ -95,6 +95,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadProducts(1); // Load products with filters applied
   });
 
+  // Get the current page from URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const currentPage = parseInt(urlParams.get('page')) || 1;
+
+  // Load products for the current page
+  loadProducts(currentPage);
+
   // load products
   async function loadProducts(page = 1) {
     // get selected filters
@@ -105,7 +112,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.querySelectorAll('#type-filters input[type="checkbox"]:checked')
     ).map((checkbox) => checkbox.value);
 
-    let url = `/products?page=${page}`;
+    let url = `/products/api?page=${page}`;
     if (selectedBrands.length > 0) {
       url += `&brand=${selectedBrands.join(';')}`;
     }
@@ -130,6 +137,16 @@ document.addEventListener('DOMContentLoaded', async () => {
       ).innerHTML = `<p>${productsData.error}</p>`;
       document.getElementById('pagination').innerHTML = '';
     }
+
+    // Update the URL with the current page and filters
+    const newUrl = `/products?page=${page}${
+      selectedBrands.length > 0 ? `&brand=${selectedBrands.join(';')}` : ''
+    }${selectedTypes.length > 0 ? `&type=${selectedTypes.join(';')}` : ''}`;
+    history.pushState(
+      { page: page, brand: selectedBrands, type: selectedTypes },
+      '',
+      newUrl
+    );
   }
 
   // display products

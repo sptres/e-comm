@@ -16,8 +16,10 @@ exports.getProducts = async (req, res) => {
     if (brand) {
       const brandNames = brand.split(';');
       const brands = await Brand.find({ name: { $in: brandNames } });
-      if (brands.length !== brandNames.length) {
-        return res.status(422).json({ error: 'Invalid brand filters.' });
+      if (brands.length === 0) {
+        return res
+          .status(200)
+          .json({ products: [], totalPages: 0, message: 'No products found.' });
       }
       filter.brand = { $in: brands.map((b) => b._id) };
     }
@@ -25,11 +27,14 @@ exports.getProducts = async (req, res) => {
     // type filter
     if (type) {
       const types = type.split(';');
-      const validTypes = ['Type1', 'Type2', 'Type3', 'Type4']; // Add 'Type4' to valid types
+      const validTypes = ['Type1', 'Type2', 'Type3', 'Type4'];
       const filteredTypes = types.filter((t) => validTypes.includes(t));
-      if (filteredTypes.length > 0) {
-        filter.type = { $in: filteredTypes };
+      if (filteredTypes.length === 0) {
+        return res
+          .status(200)
+          .json({ products: [], totalPages: 0, message: 'No products found.' });
       }
+      filter.type = { $in: filteredTypes };
     }
 
     const totalProducts = await Product.countDocuments(filter);

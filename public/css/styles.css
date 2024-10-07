@@ -1,0 +1,21 @@
+/* divider for landing page */
+.divider-vertical {
+  width: 1px;
+  background-color: #e0e0e0;
+  margin: 0 15px;
+}
+
+/* divider flex */
+@media (max-width: 767px) {
+  #filter-section,
+  #product-section,
+  #favorites-sidebar {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
+
+  #favorites-sidebar {
+    border-bottom: none;
+  }
+}
