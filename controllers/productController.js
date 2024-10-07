@@ -2,6 +2,7 @@ const Product = require('../models/Product');
 const Brand = require('../models/Brand');
 const User = require('../models/User');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 
 exports.getProducts = async (req, res) => {
   try {
@@ -82,7 +83,11 @@ exports.getProductDetails = async (req, res) => {
 exports.favoriteProduct = async (req, res) => {
   try {
     const { productId } = req.params;
-    const userId = req.session.userId;
+
+    // Get the user ID from the JWT token
+    const token = req.headers.authorization.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.userId;
 
     // Validate product ID
     if (!mongoose.Types.ObjectId.isValid(productId)) {
@@ -111,7 +116,11 @@ exports.favoriteProduct = async (req, res) => {
 exports.unfavoriteProduct = async (req, res) => {
   try {
     const { productId } = req.params;
-    const userId = req.session.userId;
+
+    // Get the user ID from the JWT token
+    const token = req.headers.authorization.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.userId;
 
     // Validate product ID
     if (!mongoose.Types.ObjectId.isValid(productId)) {

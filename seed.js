@@ -24,7 +24,7 @@ const seedDatabase = async () => {
         name: `Product${i + 1}`,
         brand: brands[i % brands.length]._id,
         type: productTypes[i % productTypes.length],
-        image: `/images/product.jpg`,
+        image: `product.webp`, // Remove the leading "/images/"
         description: `Description for Product${i + 1}`,
         price: ((i + 1) * 10).toFixed(2),
       });
