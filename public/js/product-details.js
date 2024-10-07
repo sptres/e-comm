@@ -36,6 +36,7 @@ function displayProductDetails(product) {
                 <p>Brand: ${product.brand.name}</p>
                 <p>Price: $${product.price.toFixed(2)}</p>
                 <p>Description: ${product.description}</p>
+                <p>Type: ${product.type}</p>
                 <button id="favorite-btn" class="btn btn-primary" data-product-id="${
                   product._id
                 }">

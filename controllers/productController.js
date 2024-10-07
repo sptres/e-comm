@@ -22,17 +22,16 @@ exports.getProducts = async (req, res) => {
       filter.brand = { $in: brands.map((b) => b._id) };
     }
 
-    // Validate type filters
+    // Handle type filters
     if (type) {
       const types = type.split(';');
-      const validTypes = ['Type1', 'Type2', 'Type3'];
-      for (const t of types) {
-        if (!validTypes.includes(t)) {
-          return res.status(422).json({ error: 'Invalid type filters.' });
-        }
+      const validTypes = ['Type1', 'Type2', 'Type3', 'Type4']; // Add 'Type4' to valid types
+      const filteredTypes = types.filter((t) => validTypes.includes(t));
+      if (filteredTypes.length > 0) {
+        filter.type = { $in: filteredTypes };
       }
-      filter.type = { $in: types };
     }
+
     const totalProducts = await Product.countDocuments(filter);
     const totalPages = Math.ceil(totalProducts / limit);
 
@@ -43,7 +42,9 @@ exports.getProducts = async (req, res) => {
       .populate('brand');
 
     if (products.length === 0) {
-      return res.status(404).json({ error: 'No products found.' });
+      return res
+        .status(200)
+        .json({ products: [], totalPages: 0, message: 'No products found.' });
     }
 
     res.status(200).json({ products, totalPages });

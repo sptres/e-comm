@@ -119,10 +119,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const productsData = await productsResponse.json();
 
     if (productsResponse.ok) {
-      displayProducts(productsData.products);
-      setupPagination(page, productsData.totalPages);
+      if (productsData.products.length === 0) {
+        displayNoProductsFound();
+      } else {
+        displayProducts(productsData.products);
+        setupPagination(page, productsData.totalPages);
+      }
     } else {
-      // Handle errors (e.g., no products found)
+      // Handle errors (e.g., invalid filters)
       document.getElementById(
         'product-gallery'
       ).innerHTML = `<p>${productsData.error}</p>`;
@@ -389,6 +393,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   ) {
     const favoritesContent = document.getElementById('favorites-content');
     favoritesContent.innerHTML = `<p class="text-muted">${message}</p>`;
+  }
+
+  // New function to display "No products found" message
+  function displayNoProductsFound() {
+    const gallery = document.getElementById('product-gallery');
+    gallery.innerHTML = '<p class="col-12 text-center">No products found</p>';
+    document.getElementById('pagination').innerHTML = '';
   }
 
   // Initial load
