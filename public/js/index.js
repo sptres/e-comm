@@ -92,14 +92,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   const filterForm = document.getElementById('filter-form');
   filterForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    loadProducts(1); // Load products with filters applied
+    loadProducts(1);
   });
 
-  // Get the current page from URL parameters
+  // get current page based on url params
   const urlParams = new URLSearchParams(window.location.search);
   const currentPage = parseInt(urlParams.get('page')) || 1;
 
-  // Load products for the current page
+  // load products
   loadProducts(currentPage);
 
   // load products
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       document.getElementById('pagination').innerHTML = '';
     }
 
-    // Update the URL with the current page and filters
+    // pagination url
     const newUrl = `/products?page=${page}${
       selectedBrands.length > 0 ? `&brand=${selectedBrands.join(';')}` : ''
     }${selectedTypes.length > 0 ? `&type=${selectedTypes.join(';')}` : ''}`;

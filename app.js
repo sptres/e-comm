@@ -27,7 +27,6 @@ app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
 app.use('/admin', adminRoutes);
 
-// Serve the index.html file for root and /products routes
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
