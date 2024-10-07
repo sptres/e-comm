@@ -12,6 +12,20 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
+    <style>
+      .table-container {
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+        overflow: hidden;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .table-container .table {
+        margin-bottom: 0;
+      }
+      .table-container .table thead th {
+        border-top: none;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -21,7 +35,7 @@
     </nav>
     <div class="container mt-5">
       <h1 class="mb-4">Admin Dashboard</h1>
-      <div id="admin-content" class="table-responsive"></div>
+      <div id="admin-content"></div>
     </div>
     <script src="/js/admin.js"></script>
   </body>

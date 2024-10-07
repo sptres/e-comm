@@ -14,6 +14,23 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
     <script src="/js/login.js" defer></script>
+    <style>
+      .form-container {
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+      }
+      .form-legend {
+        background-color: #62c6f2;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 30px;
+        font-size: 1.2rem;
+        margin-bottom: 20px;
+        display: inline-block;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -22,40 +39,44 @@
       </div>
     </nav>
     <div class="container mt-5">
-      <h1 class="text-center mb-4">Login to Shawn's Store</h1>
       <div class="row justify-content-center">
         <div class="col-md-6">
-          <form id="login-form">
-            <div class="form-group">
-              <input
-                type="text"
-                class="form-control"
-                name="usernameOrEmail"
-                placeholder="Username or Email"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <input
-                type="password"
-                class="form-control"
-                name="password"
-                placeholder="Password"
-                required
-              />
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">
-              Login
-            </button>
-          </form>
-          <div
-            id="error-message"
-            class="alert alert-danger mt-3"
-            style="display: none"
-          ></div>
-          <p class="mt-3 text-center">
-            Don't have an account? <a href="/register">Register here</a>
-          </p>
+          <div class="form-container">
+            <legend class="form-legend text-center">
+              Login to Shawn's Store
+            </legend>
+            <form id="login-form">
+              <div class="form-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="usernameOrEmail"
+                  placeholder="Username or Email"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <input
+                  type="password"
+                  class="form-control"
+                  name="password"
+                  placeholder="Password"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary btn-block">
+                Login
+              </button>
+            </form>
+            <div
+              id="error-message"
+              class="alert alert-danger mt-3"
+              style="display: none"
+            ></div>
+            <p class="mt-3 text-center">
+              Don't have an account? <a href="/register">Register here</a>
+            </p>
+          </div>
         </div>
       </div>
     </div>

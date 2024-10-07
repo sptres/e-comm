@@ -35,16 +35,17 @@ function displayAdminData(data) {
   const adminContent = document.getElementById('admin-content');
 
   let tableHTML = `
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Username</th>
-          <th>Email</th>
-          <th>Admin</th>
-          <th>Favorites</th>
-        </tr>
-      </thead>
-      <tbody>
+    <div class="table-container">
+      <table class="table table-striped">
+        <thead class="thead-light">
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Admin</th>
+            <th>Favorites</th>
+          </tr>
+        </thead>
+        <tbody>
   `;
 
   data.users.forEach((user) => {
@@ -57,7 +58,7 @@ function displayAdminData(data) {
     `;
 
     if (user.favorites && user.favorites.length > 0) {
-      tableHTML += '<ul>';
+      tableHTML += '<ul class="list-unstyled mb-0">';
       user.favorites.forEach((favorite) => {
         tableHTML += `<li>${favorite.name || 'Unnamed item'}</li>`;
       });
@@ -73,12 +74,13 @@ function displayAdminData(data) {
   });
 
   tableHTML += `
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   `;
 
   adminContent.innerHTML = `
-    <h2>User Data</h2>
+    <h2 class="mb-3">User Data</h2>
     ${tableHTML}
   `;
 }
